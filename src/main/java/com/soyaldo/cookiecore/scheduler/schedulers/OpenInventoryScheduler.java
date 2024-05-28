@@ -15,25 +15,26 @@
  *       along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.soyaldo.cookiecore.scheduler;
+package com.soyaldo.cookiecore.scheduler.schedulers;
 
+import com.soyaldo.cookiecore.scheduler.Scheduler;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class OpenInventoryTask extends Task {
+public class OpenInventoryScheduler extends Scheduler {
 
     private final Player player;
     private final Inventory inventory;
 
-    public OpenInventoryTask(JavaPlugin plugin, Player player, Inventory inventory, long ticks) {
+    public OpenInventoryScheduler(JavaPlugin plugin, Player player, Inventory inventory, long ticks) {
         super(plugin, ticks);
         this.player = player;
         this.inventory = inventory;
     }
 
     @Override
-    public void actions() {
+    public void onExecute() {
         if (player.isOnline()) {
             player.openInventory(inventory);
         }
