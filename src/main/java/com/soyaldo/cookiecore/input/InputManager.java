@@ -1,93 +1,87 @@
-/*
- *   Copyright (C) 2021 SirOswaldo
- *
- *       This program is free software: you can redistribute it and/or modify
- *       it under the terms of the GNU General Public License as published by
- *       the Free Software Foundation, either version 3 of the License, or
- *       (at your option) any later version.
- *
- *       This program is distributed in the hope that it will be useful,
- *       but WITHOUT ANY WARRANTY; without even the implied warranty of
- *       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *       GNU General Public License for more details.
- *
- *       You should have received a copy of the GNU General Public License
- *       along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 package com.soyaldo.cookiecore.input;
 
 import com.soyaldo.cookiecore.input.inputs.ChatInput;
 import com.soyaldo.cookiecore.input.inputs.DropInput;
-import com.soyaldo.cookiecore.input.inputs.ShiftInput;
-import lombok.Getter;
+import com.soyaldo.cookiecore.input.inputs.SneakInput;
+import com.soyaldo.cookiecore.input.listeners.AsyncPlayerChatListener;
+import com.soyaldo.cookiecore.input.listeners.PlayerDropItemListener;
+import com.soyaldo.cookiecore.input.listeners.PlayerQuitListener;
+import com.soyaldo.cookiecore.input.listeners.PlayerToggleSneakListener;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
-import java.util.UUID;
 
-@Getter
+@RequiredArgsConstructor
 public class InputManager implements Listener {
 
-    private final HashMap<UUID, ChatInput> chats = new HashMap<>();
-    private final HashMap<UUID, DropInput> drops = new HashMap<>();
-    private final HashMap<UUID, ShiftInput> shifts = new HashMap<>();
+    private final JavaPlugin javaPlugin;
 
-    public void addInput(Player player, ChatInput input) {
-        chats.put(player.getUniqueId(), input);
+    private final HashMap<String, ChatInput> chatInputs = new HashMap<>();
+    private final HashMap<String, DropInput> dropInputs = new HashMap<>();
+    private final HashMap<String, SneakInput> sneakInputs = new HashMap<>();
+
+    public void register() {
+        javaPlugin.getServer().getPluginManager().registerEvents(new AsyncPlayerChatListener(this), javaPlugin);
+        javaPlugin.getServer().getPluginManager().registerEvents(new PlayerDropItemListener(this), javaPlugin);
+        javaPlugin.getServer().getPluginManager().registerEvents(new PlayerQuitListener(this), javaPlugin);
+        javaPlugin.getServer().getPluginManager().registerEvents(new PlayerToggleSneakListener(this), javaPlugin);
     }
 
-    public void addInput(Player player, DropInput input) {
-        drops.put(player.getUniqueId(), input);
-    }
-
-    public void addInput(Player player, ShiftInput input) {
-        shifts.put(player.getUniqueId(), input);
+    public void reload() {
+        chatInputs.clear();
+        dropInputs.clear();
+        sneakInputs.clear();
     }
 
     public boolean isChatInput(Player player) {
-        return chats.containsKey(player.getUniqueId());
+        return chatInputs.containsKey(player.getUniqueId().toString());
     }
 
     public boolean isDropInput(Player player) {
-        return drops.containsKey(player.getUniqueId());
+        return dropInputs.containsKey(player.getUniqueId().toString());
     }
 
-    public boolean isShiftInput(Player player) {
-        return shifts.containsKey(player.getUniqueId());
+    public boolean isSneakInput(Player player) {
+        return sneakInputs.containsKey(player.getUniqueId().toString());
     }
 
-    @EventHandler
-    public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
-        Player player = event.getPlayer();
-        UUID uuid = player.getUniqueId();
-        if (chats.containsKey(uuid)) {
-            ChatInput chatInput = chats.get(uuid);
-            chatInput.onPlayerSneak(player);
-            chats.remove(uuid);
-        }
-        if (drops.containsKey(uuid)) {
-            DropInput chatInput = drops.get(uuid);
-            chatInput.onPlayerSneak(player);
-            drops.remove(uuid);
-        }
-        if (shifts.containsKey(uuid)) {
-            ShiftInput shiftInput = shifts.get(uuid);
-            shiftInput.onShift(player);
-            shifts.remove(uuid);
-        }
+    public void addInput(Player player, ChatInput input) {
+        chatInputs.put(player.getUniqueId().toString(), input);
     }
 
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        chats.remove(event.getPlayer().getUniqueId());
-        drops.remove(event.getPlayer().getUniqueId());
-        shifts.remove(event.getPlayer().getUniqueId());
+    public void addInput(Player player, DropInput input) {
+        dropInputs.put(player.getUniqueId().toString(), input);
+    }
+
+    public void addInput(Player player, SneakInput input) {
+        sneakInputs.put(player.getUniqueId().toString(), input);
+    }
+
+    public ChatInput getChatInput(Player player) {
+        return chatInputs.get(player.getUniqueId().toString());
+    }
+
+    public DropInput getDropInput(Player player) {
+        return dropInputs.get(player.getUniqueId().toString());
+    }
+
+    public SneakInput getSneakInput(Player player) {
+        return sneakInputs.get(player.getUniqueId().toString());
+    }
+
+    public void removeChatInput(Player player) {
+        chatInputs.remove(player.getUniqueId().toString());
+    }
+
+    public void removeDropInput(Player player) {
+        dropInputs.remove(player.getUniqueId().toString());
+    }
+
+    public void removeSneakInput(Player player) {
+        sneakInputs.remove(player.getUniqueId().toString());
     }
 
 }

@@ -3,14 +3,12 @@ package com.soyaldo.cookiecore.input.listeners;
 import com.soyaldo.cookiecore.input.InputManager;
 import com.soyaldo.cookiecore.input.inputs.ChatInput;
 import com.soyaldo.cookiecore.input.inputs.DropInput;
-import com.soyaldo.cookiecore.input.inputs.ShiftInput;
+import com.soyaldo.cookiecore.input.inputs.SneakInput;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
-
-import java.util.UUID;
 
 @RequiredArgsConstructor
 public class PlayerToggleSneakListener implements Listener {
@@ -19,26 +17,21 @@ public class PlayerToggleSneakListener implements Listener {
 
     @EventHandler
     public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
-        // Getting the player and the unique id.
         Player player = event.getPlayer();
-        UUID uuid = player.getUniqueId();
-
-        if (chats.containsKey(uuid)) {
-            ChatInput chatInput = chats.get(uuid);
+        if (inputManager.isChatInput(player)) {
+            ChatInput chatInput = inputManager.getChatInput(player);
             chatInput.onPlayerSneak(player);
-            chats.remove(uuid);
+            inputManager.removeChatInput(player);
         }
-
-        if (drops.containsKey(uuid)) {
-            DropInput chatInput = drops.get(uuid);
+        if (inputManager.isDropInput(player)) {
+            DropInput chatInput = inputManager.getDropInput(player);
             chatInput.onPlayerSneak(player);
-            drops.remove(uuid);
+            inputManager.removeDropInput(player);
         }
-
-        if (shifts.containsKey(uuid)) {
-            ShiftInput shiftInput = shifts.get(uuid);
-            shiftInput.onShift(player);
-            shifts.remove(uuid);
+        if (inputManager.isSneakInput(player)) {
+            SneakInput sneakInput = inputManager.getSneakInput(player);
+            sneakInput.onPlayerSneak(player);
+            inputManager.removeSneakInput(player);
         }
     }
 

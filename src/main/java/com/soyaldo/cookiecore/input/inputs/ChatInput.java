@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 
 public interface ChatInput {
 
-    boolean onChatInput(Player player, String input);
+    boolean onPlayerChat(Player player, String input);
 
     void onPlayerSneak(Player player);
 

@@ -2,8 +2,8 @@ package com.soyaldo.cookiecore.input.inputs;
 
 import org.bukkit.entity.Player;
 
-public interface ShiftInput {
+public interface SneakInput {
 
-    void onShift(Player player);
+    void onPlayerSneak(Player player);
 
 }

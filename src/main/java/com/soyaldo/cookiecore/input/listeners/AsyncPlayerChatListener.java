@@ -8,8 +8,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.UUID;
-
 @RequiredArgsConstructor
 public class AsyncPlayerChatListener implements Listener {
 
@@ -19,17 +17,16 @@ public class AsyncPlayerChatListener implements Listener {
     public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
         // Getting the player and the unique id.
         Player player = event.getPlayer();
-        UUID uuid = player.getUniqueId();
         // If the player unique id do not exist on chat input.
-        if (!inputManager.getChats().containsKey(uuid)) return;
+        if (!inputManager.isChatInput(player)) return;
         // Cancel the event.
         event.setCancelled(true);
         // Getting the player chat input.
-        ChatInput chatInput = inputManager.getChats().get(uuid);
+        ChatInput chatInput = inputManager.getChatInput(player);
         // If the chat input return false.
-        if (!chatInput.onChatInput(player, event.getMessage())) return;
+        if (!chatInput.onPlayerChat(player, event.getMessage())) return;
         // Remove the chat input from input manager.
-        inputManager.getChats().remove(uuid);
+        inputManager.removeChatInput(player);
     }
 
 }
