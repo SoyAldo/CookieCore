@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 public class Actions {
 
-    List<Action> actions = new ArrayList<>();
+    private final List<Action> actions = new ArrayList<>();
 
     public void execute(Player player, String[][] replacements) {
         actions.forEach(action -> action.execute(player, replacements));
