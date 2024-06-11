@@ -1,0 +1,11 @@
+requirement:
+  - '[min required] 5'
+  - '[has money] name'
+  - '[default deny] {action syntax}'
+  - '[amount] 1000'
+  - '[optional]'
+  - '[deny] {action syntax}'
+  - '[accept] {action syntax}'
+  - '[string equals]'
+  - '[compare]'
+  - '[value]'

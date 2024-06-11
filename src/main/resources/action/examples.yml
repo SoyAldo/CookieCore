@@ -1,0 +1,12 @@
+############# Types available #############
+# [message] Your text!
+# [title] Title Sub title
+# [action-bar] Your text!
+# [teleport] world x y z yaw pitch
+# [console-command] your command!
+# [player-command] your command!
+############# Properties #############
+# [global] : default false
+# [async] : default false
+# [delay:10] : default 0
+# [permission:your.permission.node] : default not defined
