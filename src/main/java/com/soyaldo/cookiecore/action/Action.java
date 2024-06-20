@@ -1,5 +1,6 @@
 package com.soyaldo.cookiecore.action;
 
+import com.soyaldo.cookiecore.action.ActionManager;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

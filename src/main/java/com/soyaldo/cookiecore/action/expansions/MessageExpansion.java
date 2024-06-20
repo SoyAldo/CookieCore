@@ -5,6 +5,8 @@ import com.soyaldo.cookiecore.action.ActionExpansion;
 import com.soyaldo.cookiecore.action.ActionManager;
 import com.soyaldo.cookiecore.action.actions.MessageAction;
 
+import java.util.HashMap;
+
 public class MessageExpansion extends ActionExpansion {
 
     public MessageExpansion(ActionManager actionManager, String name) {
@@ -12,7 +14,12 @@ public class MessageExpansion extends ActionExpansion {
     }
 
     @Override
-    public Action buildAction(String format) {
+    public Action processProperties(Action action, HashMap<String, String> properties) {
+        return action;
+    }
+
+    @Override
+    public Action getAction() {
         return new MessageAction(getActionManager());
     }
 

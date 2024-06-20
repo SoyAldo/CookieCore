@@ -1,7 +1,7 @@
 package com.soyaldo.cookiecore.action.actions;
 
-import com.soyaldo.cookiecore.action.Action;
 import com.soyaldo.cookiecore.action.ActionManager;
+import com.soyaldo.cookiecore.action.Action;
 import com.soyaldo.cookiecore.utils.MinedownUtil;
 import com.soyaldo.cookiecore.utils.PlaceholderUtil;
 import com.soyaldo.cookiecore.utils.TextUtil;

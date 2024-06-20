@@ -1,5 +1,7 @@
 package com.soyaldo.cookiecore.yaml;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
+import de.tr7zw.changeme.nbtapi.NBTType;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
@@ -20,7 +22,6 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.logging.Level;
-
 
 public class Yaml {
 
@@ -520,30 +521,23 @@ public class Yaml {
                     itemStack.setDurability((short) getInt(path + ".durability"));
                 }
             }
-            /*
             // ITEM NBTAPI
-            if (contains(path + ".nbt")){
-                if (Bukkit.getPluginManager().isPluginEnabled("NBTAPI")){
+            if (contains(path + ".nbt")) {
+                if (Bukkit.getPluginManager().isPluginEnabled("NBTAPI")) {
                     NBTItem nbtItem = new NBTItem(itemStack);
-                    for(String key : Objects.requireNonNull(getFileConfiguration().getConfigurationSection(path + ".nbt")).getKeys(false)){
-                        try{
-                            if(isString(path + ".nbt." + key)){
+                    for (String key : Objects.requireNonNull(getFileConfiguration().getConfigurationSection(path + ".nbt")).getKeys(false)) {
+                        try {
+                            if (isString(path + ".nbt." + key)) {
                                 nbtItem.setString(key, getString(path + ".nbt." + key));
-                            }else if(isInt(path + ".nbt." + key)){
+                            } else if (isInt(path + ".nbt." + key)) {
                                 nbtItem.setInteger(key, getInt(path + ".nbt." + key));
-                            }else{
-                                Bukkit.getLogger().log(Level.SEVERE, "[CrowtySkyPvP] An error has occurred trying load NBT: "+key+". Please enter a valid type: STRING/INTEGER.");
                             }
-                        }catch (Exception e){
-                            Bukkit.getLogger().log(Level.SEVERE, "[CrowtySkyPvP] An error has occurred trying load NBT: "+key);
+                        } catch (Exception ignore) {
                         }
                     }
                     itemStack = nbtItem.getItem();
-                }else{
-                    Bukkit.getLogger().log(Level.INFO, "To enable NBT item options, please download the plugin NBTAPI from Spigot.");
                 }
             }
-             */
             // SKULL ITEM
             if (itemStack.getType().equals(Material.PLAYER_HEAD)) {
                 if (contains(path + ".head-owner")) {
@@ -600,18 +594,17 @@ public class Yaml {
             if (item.getType().getMaxDurability() != item.getDurability()) {
                 set(path + ".durability", item.getDurability());
             }
-            /*
             // ITEM NBTAPI
-            if (Bukkit.getPluginManager().isPluginEnabled("NBTAPI")){
+            if (Bukkit.getPluginManager().isPluginEnabled("NBTAPI")) {
                 NBTItem nbtItem = new NBTItem(item);
-                for(String key : nbtItem.getKeys()){
-                    if(nbtItem.getType(key).equals(NBTType.NBTTagString)){
+                for (String key : nbtItem.getKeys()) {
+                    if (nbtItem.getType(key).equals(NBTType.NBTTagString)) {
                         set(path + ".nbt." + key, nbtItem.getString(key));
-                    }else if(nbtItem.getType(key).equals(NBTType.NBTTagInt)){
+                    } else if (nbtItem.getType(key).equals(NBTType.NBTTagInt)) {
                         set(path + ".nbt." + key, nbtItem.getInteger(key));
                     }
                 }
-             */
+            }
             // SKULL TYPE
             if (item.getType().equals(Material.PLAYER_HEAD)) {
                 SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
@@ -619,8 +612,8 @@ public class Yaml {
                     set(path + ".head-owner", Objects.requireNonNull(skullMeta.getOwningPlayer()).getName());
                 }
             }
+            saveFileConfiguration();
         }
-        saveFileConfiguration();
     }
 
     public static ItemStack replace(ItemStack itemStack, String[][] replacements) {

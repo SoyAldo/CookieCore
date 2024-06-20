@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Getter
@@ -39,19 +37,57 @@ public class ActionManager {
         return expansions.get(name);
     }
 
+    public Action generateAction(String format) {
+        HashMap<String, Object> properties = deserialize(format);
+        return null;
+    }
 
-    public List<String> deserialize(String format) {
+    public HashMap<String, Object> deserialize(String format) {
         /*
         type:name
-        global:yes
-        async:yes
+        global:false
+        async:false
         delay:10
         permission:your.permission.node
         value:Your value!
          */
-        List<String> deserialized = new ArrayList<>();
+        HashMap<String, Object> deserialized = new HashMap<>();
+        deserialized.put("global", false);
+        deserialized.put("async", false);
+        deserialized.put("delay", 0);
+        deserialized.put("permission", "");
 
+        while (format.split(" ")[0].startsWith("[") && format.split(" ")[0].endsWith("]")) {
+            String property = format.split(" ")[0];
+            property = property.substring(1, property.length() - 1);
+            if (property.contains(":")) {
+                String key = property.split(":")[0];
+                String value = property.substring(key.length() + 1);
+                // Delay
+                if (key.equals("delay")) {
+                    try {
+                        int delay = Integer.parseInt(value);
+                        deserialized.put("delay", delay);
+                    } catch (NumberFormatException e) {
+                        deserialized.put("delay", 0);
+                    }
+                }
+                // Permission
+                else if (key.equals("permission")) {
+                    deserialized.put(key, value);
+                }
+            } else {
+                // Global
+                if (property.equals("global")) deserialized.put("global", true);
+                    // Async
+                else if (property.equals("async")) deserialized.put("async", true);
+            }
+            format = format.substring(property.length() + 1);
+        }
 
+        if (!format.isEmpty()) {
+            deserialized.put("value", format);
+        }
 
         return deserialized;
     }
