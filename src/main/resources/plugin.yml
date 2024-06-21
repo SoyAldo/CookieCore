@@ -2,7 +2,16 @@ name: CookieCore
 version: '${project.version}'
 main: com.soyaldo.cookiecore.CookieCore
 api-version: '1.16'
-softdepend: [PlaceholderAPI]
-authors: [SoyAldo]
+softdepend: [ PlaceholderAPI ]
+authors: [ SoyAldo ]
 description: Core for my own plugins or public use.
 website: https://soyaldo.com/plugins/cookiecore
+
+commands:
+  cookiecore:
+    description: "Admin command for CookieCore."
+
+permissions:
+  cookiecore.admin:
+    description: "Access to execute /cookiecore command."
+    default: "op"

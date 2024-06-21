@@ -1,0 +1,14 @@
+prefix: "&6CookieCore &8|"
+
+noPermission: "%prefix% &cYou do not have permission do that."
+emptySubcommand: "%prefix% &cThe subcommand could not be empty."
+invalidSubcommand: "%prefix% &cThe subcommand &7%subcommand% &cis invalid."
+reloaded: "%prefix% &aReload completed successfully."
+
+help:
+  - ""
+  - "%prefix% Help guide"
+  - ""
+  - "/%cmd% reload  &8- Reload the core."
+  - "/%cmd% version &8- Check the core version."
+  - ""

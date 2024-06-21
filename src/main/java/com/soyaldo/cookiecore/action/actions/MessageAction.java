@@ -1,10 +1,13 @@
 package com.soyaldo.cookiecore.action.actions;
 
-import com.soyaldo.cookiecore.action.ActionManager;
 import com.soyaldo.cookiecore.action.Action;
-import com.soyaldo.cookiecore.utils.MinedownUtil;
+import com.soyaldo.cookiecore.action.ActionManager;
 import com.soyaldo.cookiecore.utils.PlaceholderUtil;
 import com.soyaldo.cookiecore.utils.TextUtil;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 
 public class MessageAction extends Action {
@@ -24,8 +27,14 @@ public class MessageAction extends Action {
         // PlaceholderAPI
         message = PlaceholderUtil.setPlaceholder(player, message);
 
-        // Send message
-        player.spigot().sendMessage(MinedownUtil.translate(message));
+        // Generating the audience.
+        Audience audience = BukkitAudiences.create(getActionManager().getJavaPlugin()).sender(player);
+
+        // Generating the component.
+        Component component = MiniMessage.miniMessage().deserialize(message);
+
+        // Send the message.
+        audience.sendMessage(component);
     }
 
     @Override

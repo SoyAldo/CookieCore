@@ -6,7 +6,7 @@
 - Action API (alpha)
 - Requirement API (alpha)
 - File (YAML)
-- Messenger
+- Messenger (MiniMessage and PlaceholderAPI support)
 - Command
 - Scheduler
 - Copyright

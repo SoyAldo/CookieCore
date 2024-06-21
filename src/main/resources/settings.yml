@@ -1,0 +1,5 @@
+debug: false
+
+placeholders:
+  enable: "&aENABLED"
+  disabled: "&cDISABLED"

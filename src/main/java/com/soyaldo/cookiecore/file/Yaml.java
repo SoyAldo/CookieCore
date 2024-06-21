@@ -122,6 +122,14 @@ public class Yaml {
         return new File(directory, name + ".yml").exists();
     }
 
+    public Object get(String path) {
+        return fileConfiguration.get(path);
+    }
+
+    public Object get(String path, Object def) {
+        return fileConfiguration.get(path, def);
+    }
+
     public FileConfiguration getFileConfiguration() {
         if (fileConfiguration == null) reload();
         return fileConfiguration;
