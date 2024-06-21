@@ -28,7 +28,7 @@ public class CopyrightUtil {
         versionStatus.add("&6»");
         versionStatus.add("&6» &fCoded with love <3");
         versionStatus.add("&6»");
-        Messenger.sendRaw(commandSender, versionStatus);
+        Messenger.sendRaw(plugin, commandSender, versionStatus);
     }
 
 }
