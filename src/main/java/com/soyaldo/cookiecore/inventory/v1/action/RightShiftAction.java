@@ -15,7 +15,7 @@
  *       along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.soyaldo.cookiecore.inventory.action;
+package com.soyaldo.cookiecore.inventory.v1.action;
 
 import org.bukkit.entity.Player;
 

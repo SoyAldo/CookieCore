@@ -1,5 +1,6 @@
-package com.soyaldo.cookiecore.inventory;
+package com.soyaldo.cookiecore.inventory.v1;
 
+import com.soyaldo.cookiecore.scheduler.SimpleScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -18,6 +19,10 @@ public class InventoryManager implements Listener {
 
     private final JavaPlugin javaPlugin;
 
+    public JavaPlugin getJavaPlugin() {
+        return javaPlugin;
+    }
+
     public InventoryManager(JavaPlugin javaPlugin) {
         this.javaPlugin = javaPlugin;
     }
@@ -34,22 +39,34 @@ public class InventoryManager implements Listener {
             Inventory inventory = Bukkit.createInventory(null, inventoryBuilder.getRows() * 9, ChatColor.translateAlternateColorCodes('&', inventoryBuilder.getTitle()));
             for (int slot = 0; slot < (inventoryBuilder.getRows() * 9); slot++) {
                 if (inventory.getSize() > slot) {
-                    inventory.setItem(slot, inventoryBuilder.getItem(slot));
+                    inventory.setItem(slot, inventoryBuilder.getItem(slot).getItem());
                 }
             }
-            // Open Inventory
-            Bukkit.getScheduler().runTaskLater(javaPlugin, () -> player.openInventory(inventory), 1);
+            inventoryBuilder.setInventory(inventory);
+            SimpleScheduler openInventoryScheduler = new SimpleScheduler(javaPlugin, 1);
+            openInventoryScheduler.addScheduleAction(bukkitTask -> {
+                player.openInventory(inventory);
+                return true;
+            });
+            openInventoryScheduler.runSchedulerLater();
+            if (inventoryBuilder.getUpdateInterval() > 0) {
+                SimpleScheduler inventoryUpdateScheduler = new SimpleScheduler(javaPlugin, 1);
+                inventoryUpdateScheduler.addScheduleAction(new InventoryUpdater(this, inventoryBuilder));
+                inventoryUpdateScheduler.runSchedulerTimer();
+            }
         }
     }
 
-    public void update(Player player) {
-        UUID uuid = player.getUniqueId();
-        if (inventories.containsKey(uuid)) {
-            InventoryBuilder inventoryBuilder = inventories.get(uuid);
-            for (int slot = 0; slot < (inventoryBuilder.getRows() * 9); slot++) {
-                player.getOpenInventory().setItem(slot, inventoryBuilder.getItem(slot));
-            }
-        }
+    public boolean containInventoryBuilder(InventoryBuilder inventoryBuilder) {
+        return inventories.containsValue(inventoryBuilder);
+    }
+
+    public boolean containInventoryBuilder(Player player) {
+        return inventories.containsKey(player.getUniqueId());
+    }
+
+    public InventoryBuilder getInventoryBuilder(Player player) {
+        return inventories.get(player.getUniqueId());
     }
 
     @EventHandler

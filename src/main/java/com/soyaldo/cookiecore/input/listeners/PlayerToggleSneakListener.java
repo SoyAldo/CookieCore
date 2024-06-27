@@ -1,6 +1,7 @@
 package com.soyaldo.cookiecore.input.listeners;
 
 import com.soyaldo.cookiecore.input.InputManager;
+import com.soyaldo.cookiecore.input.inputs.BlockBreakInput;
 import com.soyaldo.cookiecore.input.inputs.ChatInput;
 import com.soyaldo.cookiecore.input.inputs.DropInput;
 import com.soyaldo.cookiecore.input.inputs.SneakInput;
@@ -18,6 +19,11 @@ public class PlayerToggleSneakListener implements Listener {
     @EventHandler
     public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
+        if (inputManager.isBlockBreakInput(player)) {
+            BlockBreakInput blockBreakInput = inputManager.getBlockBreakInput(player);
+            blockBreakInput.onPlayerSneak(player);
+            inputManager.removeBlockBreakInput(player);
+        }
         if (inputManager.isChatInput(player)) {
             ChatInput chatInput = inputManager.getChatInput(player);
             chatInput.onPlayerSneak(player);

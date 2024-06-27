@@ -1,12 +1,10 @@
 package com.soyaldo.cookiecore.input;
 
+import com.soyaldo.cookiecore.input.inputs.BlockBreakInput;
 import com.soyaldo.cookiecore.input.inputs.ChatInput;
 import com.soyaldo.cookiecore.input.inputs.DropInput;
 import com.soyaldo.cookiecore.input.inputs.SneakInput;
-import com.soyaldo.cookiecore.input.listeners.AsyncPlayerChatListener;
-import com.soyaldo.cookiecore.input.listeners.PlayerDropItemListener;
-import com.soyaldo.cookiecore.input.listeners.PlayerQuitListener;
-import com.soyaldo.cookiecore.input.listeners.PlayerToggleSneakListener;
+import com.soyaldo.cookiecore.input.listeners.*;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -19,21 +17,28 @@ public class InputManager implements Listener {
 
     private final JavaPlugin javaPlugin;
 
+    private final HashMap<String, BlockBreakInput> blockBreakInputs = new HashMap<>();
     private final HashMap<String, ChatInput> chatInputs = new HashMap<>();
     private final HashMap<String, DropInput> dropInputs = new HashMap<>();
     private final HashMap<String, SneakInput> sneakInputs = new HashMap<>();
 
     public void register() {
         javaPlugin.getServer().getPluginManager().registerEvents(new AsyncPlayerChatListener(this), javaPlugin);
+        javaPlugin.getServer().getPluginManager().registerEvents(new BlockBreakListener(this), javaPlugin);
         javaPlugin.getServer().getPluginManager().registerEvents(new PlayerDropItemListener(this), javaPlugin);
         javaPlugin.getServer().getPluginManager().registerEvents(new PlayerQuitListener(this), javaPlugin);
         javaPlugin.getServer().getPluginManager().registerEvents(new PlayerToggleSneakListener(this), javaPlugin);
     }
 
     public void reload() {
+        blockBreakInputs.clear();
         chatInputs.clear();
         dropInputs.clear();
         sneakInputs.clear();
+    }
+
+    public boolean isBlockBreakInput(Player player) {
+        return blockBreakInputs.containsKey(player.getUniqueId().toString());
     }
 
     public boolean isChatInput(Player player) {
@@ -48,6 +53,10 @@ public class InputManager implements Listener {
         return sneakInputs.containsKey(player.getUniqueId().toString());
     }
 
+    public void addInput(Player player, BlockBreakInput input) {
+        blockBreakInputs.put(player.getUniqueId().toString(), input);
+    }
+
     public void addInput(Player player, ChatInput input) {
         chatInputs.put(player.getUniqueId().toString(), input);
     }
@@ -60,6 +69,10 @@ public class InputManager implements Listener {
         sneakInputs.put(player.getUniqueId().toString(), input);
     }
 
+    public BlockBreakInput getBlockBreakInput(Player player) {
+        return blockBreakInputs.get(player.getUniqueId().toString());
+    }
+
     public ChatInput getChatInput(Player player) {
         return chatInputs.get(player.getUniqueId().toString());
     }
@@ -70,6 +83,10 @@ public class InputManager implements Listener {
 
     public SneakInput getSneakInput(Player player) {
         return sneakInputs.get(player.getUniqueId().toString());
+    }
+
+    public void removeBlockBreakInput(Player player) {
+        blockBreakInputs.remove(player.getUniqueId().toString());
     }
 
     public void removeChatInput(Player player) {

@@ -1,4 +1,4 @@
-package com.soyaldo.cookiecore.inventory.action;
+package com.soyaldo.cookiecore.inventory.v1.action;
 
 import org.bukkit.entity.Player;
 

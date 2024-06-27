@@ -15,10 +15,10 @@
  *       along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.soyaldo.cookiecore.inventory.action;
+package com.soyaldo.cookiecore.inventory.v1.action;
 
 import org.bukkit.entity.Player;
 
-public interface MiddleAction {
+public interface LeftShiftAction {
     void action(Player player, int slot);
 }

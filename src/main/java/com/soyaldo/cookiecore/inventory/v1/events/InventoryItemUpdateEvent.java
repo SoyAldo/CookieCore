@@ -1,4 +1,4 @@
-package com.soyaldo.cookiecore.inventory.events;
+package com.soyaldo.cookiecore.inventory.v1.events;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

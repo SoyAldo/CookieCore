@@ -1,4 +1,4 @@
-package com.soyaldo.cookiecore.yaml;
+package com.soyaldo.cookiecore.file.yaml.v1;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import de.tr7zw.changeme.nbtapi.NBTType;

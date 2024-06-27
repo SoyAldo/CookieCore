@@ -17,6 +17,7 @@ public class PlayerQuitListener implements Listener {
         // Getting the player.
         Player player = event.getPlayer();
         // Removing the inputs.
+        inputManager.removeBlockBreakInput(player);
         inputManager.removeChatInput(player);
         inputManager.removeDropInput(player);
         inputManager.removeSneakInput(player);
