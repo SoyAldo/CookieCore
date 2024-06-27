@@ -10,3 +10,7 @@
 # [async] : default false
 # [delay:10] : default 0
 # [permission:your.permission.node] : default not defined
+
+examples:
+  - "[message] [global] [permission:vip.announce] You have more money!!!"
+  - "[console-command] [global] [permission:vip.announce] eco give %player_name% 1000"

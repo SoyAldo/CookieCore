@@ -16,7 +16,7 @@ public abstract class ActionExpansion {
 
     public abstract Action getAction();
 
-    public Action buildAction(String format) {
+    public Action buildAction(HashMap<String, Object> deserialized) {
         Action action = getAction();
 
         return action;

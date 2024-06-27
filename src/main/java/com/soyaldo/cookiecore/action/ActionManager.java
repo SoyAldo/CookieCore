@@ -43,14 +43,6 @@ public class ActionManager {
     }
 
     public HashMap<String, Object> deserialize(String format) {
-        /*
-        type:name
-        global:false
-        async:false
-        delay:10
-        permission:your.permission.node
-        value:Your value!
-         */
         HashMap<String, Object> deserialized = new HashMap<>();
         deserialized.put("global", false);
         deserialized.put("async", false);
