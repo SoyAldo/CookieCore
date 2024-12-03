@@ -37,17 +37,22 @@ public class ActionManager {
         return expansions.get(name);
     }
 
-    public Action generateAction(String format) {
-        HashMap<String, Object> properties = deserialize(format);
+    /**
+     * Generate an Action from action syntax
+     * @param syntax The action syntax
+     * @return The Action generated or null if an error ocurres
+     */
+    public Action generateAction(String syntax) {
+        HashMap<String, Object> properties = deserialize(syntax);
         return null;
     }
 
     public HashMap<String, Object> deserialize(String format) {
         HashMap<String, Object> deserialized = new HashMap<>();
         deserialized.put("global", false);
+        deserialized.put("permission", "");
         deserialized.put("async", false);
         deserialized.put("delay", 0);
-        deserialized.put("permission", "");
 
         while (format.split(" ")[0].startsWith("[") && format.split(" ")[0].endsWith("]")) {
             String property = format.split(" ")[0];

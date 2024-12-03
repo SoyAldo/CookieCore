@@ -10,36 +10,26 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 
-public class MessageAction extends Action {
+public class PlayerMessageAction extends Action {
 
-    public MessageAction(ActionManager actionManager) {
-        super(actionManager, "message");
+    public PlayerMessageAction(ActionManager actionManager) {
+        super(actionManager, "player-message");
     }
 
     @Override
     public void onExecute(Player player, String[][] replacements) {
         // Get the message
         String message = getValue();
-
         // Replacements
         message = TextUtil.replace(message, replacements);
-
         // PlaceholderAPI
         message = PlaceholderUtil.setPlaceholder(player, message);
-
         // Generating the audience.
         Audience audience = BukkitAudiences.create(getActionManager().getJavaPlugin()).sender(player);
-
         // Generating the component.
         Component component = MiniMessage.miniMessage().deserialize(message);
-
         // Send the message.
         audience.sendMessage(component);
-    }
-
-    @Override
-    public String onSerializeProperties() {
-        return "";
     }
 
 }

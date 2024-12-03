@@ -1,5 +1,6 @@
-package com.soyaldo.cookiecore;
+package com.soyaldo.cookiecore.bukkit.commands;
 
+import com.soyaldo.cookiecore.CookieCore;
 import com.soyaldo.cookiecore.command.Command;
 import com.soyaldo.cookiecore.messenger.Messenger;
 import com.soyaldo.cookiecore.utils.CopyrightUtil;

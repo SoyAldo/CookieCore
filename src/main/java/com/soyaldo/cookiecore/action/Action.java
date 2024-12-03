@@ -1,6 +1,5 @@
 package com.soyaldo.cookiecore.action;
 
-import com.soyaldo.cookiecore.action.ActionManager;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -23,7 +22,9 @@ public abstract class Action {
 
     public abstract void onExecute(Player player, String[][] replacements);
 
-    public abstract String onSerializeProperties();
+    public String onSerializeProperties() {
+        return "";
+    }
 
     public void execute(Player player, String[][] replacements) {
         // Getting the JavaPlugin and the BukkitScheduler.
@@ -31,10 +32,10 @@ public abstract class Action {
         BukkitScheduler bukkitScheduler = javaPlugin.getServer().getScheduler();
         // If the action is global.
         if (global) {
-            javaPlugin.getServer().getOnlinePlayers().forEach(globalPlayer -> {
+            for (Player globalPlayer : javaPlugin.getServer().getOnlinePlayers()) {
                 // If the permission not is empty and the player and the player not have the permission.
                 if (!permission.isEmpty() && !globalPlayer.hasPermission(permission)) {
-                    return;
+                    continue;
                 }
                 // If the action is asynchronously.
                 if (async) {
@@ -42,7 +43,7 @@ public abstract class Action {
                 } else {
                     bukkitScheduler.runTaskLater(javaPlugin, () -> onExecute(globalPlayer, replacements), delay);
                 }
-            });
+            }
         } else {
             // If the permission not is empty and the player and the player not have the permission.
             if (!permission.isEmpty() && !player.hasPermission(permission)) {
@@ -58,10 +59,11 @@ public abstract class Action {
     }
 
     public String serialize() {
+        String result = "[" + type + "]";
+
         String extraProperties = onSerializeProperties();
 
-        String properties = "[" + type + "]";
-
+        String properties = "";
         if (global) {
             properties = properties + " [global]";
         }
@@ -78,19 +80,19 @@ public abstract class Action {
             properties = properties + " [permission:" + permission + "]";
         }
 
-        if (extraProperties.isEmpty()) {
-            if (value.isEmpty()) {
-                return properties;
-            } else {
-                return properties + " " + value;
-            }
-        } else {
-            if (value.isEmpty()) {
-                return properties + " " + extraProperties;
-            } else {
-                return properties + " " + extraProperties + " " + value;
-            }
+        if (!properties.isEmpty()) {
+            result = result + properties;
         }
+
+        if (!extraProperties.isEmpty()) {
+            result = result + " " + extraProperties;
+        }
+
+        if (!value.isEmpty()) {
+            result = result + " " + value;
+        }
+
+        return result;
     }
 
 }
