@@ -2,7 +2,6 @@ package me.soyaldo.cookiecore.utils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;
 
 import java.time.Duration;
@@ -27,11 +26,8 @@ public class AdventureUtil {
         text = TextUtil.replace(text, replacements);
         // Applying the placeholders
         text = PlaceholderUtil.setPlaceholder(player, text);
-        // Generating the component.
-        Component legacy = LegacyComponentSerializer.legacyAmpersand().deserialize(text);
-        String legacySerialized = MiniMessage.miniMessage().serialize(legacy);
         // Returning the minimessage component deserialized.
-        return MiniMessage.miniMessage().deserialize(legacySerialized);
+        return MiniMessage.miniMessage().deserialize(text);
     }
 
 }

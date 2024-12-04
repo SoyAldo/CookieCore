@@ -11,6 +11,9 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 public class PlayerTitleAction extends Action {
@@ -39,4 +42,16 @@ public class PlayerTitleAction extends Action {
         audience.showTitle(title);
     }
 
+    @Override
+    public String onSerializeProperties() {
+        List<String> serializedElements = new ArrayList<>();
+
+        if (!title.isEmpty()) serializedElements.add("[title:" + title + "]");
+        if (!subTitle.isEmpty()) serializedElements.add("[subtitle:" + subTitle + "]");
+        if (fadeIn != 10) serializedElements.add("[fade-in:" + fadeIn + "]");
+        if (stay != 70) serializedElements.add("[stay:" + stay + "]");
+        if (fadeOut != 20) serializedElements.add("[fade-out:" + fadeOut + "]");
+
+        return String.join(" ", serializedElements);
+    }
 }
