@@ -5,7 +5,7 @@ import me.soyaldo.cookiecore.action.ActionManager;
 import me.soyaldo.cookiecore.utils.AdventureUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class ConsoleCommandAction extends Action {
@@ -20,9 +20,12 @@ public class ConsoleCommandAction extends Action {
         Component component = AdventureUtil.getComponent(getValue(), replacements, player);
         // Serializing the component to string
         String command = MiniMessage.miniMessage().serialize(component);
-        // Sending the command
-        ConsoleCommandSender consoleCommandSender = getActionManager().getJavaPlugin().getServer().getConsoleSender();
-        getActionManager().getJavaPlugin().getServer().dispatchCommand(consoleCommandSender, command);
+        // Getting the command sender
+        CommandSender commandSender = getActionManager().getJavaPlugin().getServer().getConsoleSender();
+        // Sending the command in the main thread
+        getActionManager().getJavaPlugin().getServer().getScheduler().runTaskLater(getActionManager().getJavaPlugin(), () -> {
+            getActionManager().getJavaPlugin().getServer().dispatchCommand(commandSender, command);
+        }, 0L);
     }
 
 }

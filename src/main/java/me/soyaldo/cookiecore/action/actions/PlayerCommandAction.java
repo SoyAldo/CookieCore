@@ -19,8 +19,10 @@ public class PlayerCommandAction extends Action {
         Component component = AdventureUtil.getComponent(getValue(), replacements, player);
         // Serializing the component to string
         String command = MiniMessage.miniMessage().serialize(component);
-        // Sending the command
-        getActionManager().getJavaPlugin().getServer().dispatchCommand(player, command);
+        // Sending the command in the main thread
+        getActionManager().getJavaPlugin().getServer().getScheduler().runTaskLater(getActionManager().getJavaPlugin(), () -> {
+            getActionManager().getJavaPlugin().getServer().dispatchCommand(player, command);
+        }, 0L);
     }
 
 }
