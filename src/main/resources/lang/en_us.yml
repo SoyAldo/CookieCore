@@ -20,3 +20,4 @@ actionapi:
   emptySubCommand: "El sub comando no puede estár vacío. Puedes revisar como usar este comando usando /actionapi help"
   invalidSubCommand: "El subcomando no es válido. Puedes revisar como usar este comando usando /actionapi help"
   actionSyntaxError: "La acción no tiene un formato válido. Revise la documentación y vuelve a intentarlo."
+  actionVerified: "La acción fue comprobada con éxito."

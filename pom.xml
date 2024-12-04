@@ -4,14 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.soyaldo</groupId>
+    <groupId>me.soyaldo</groupId>
     <artifactId>CookieCore</artifactId>
     <packaging>jar</packaging>
 
     <name>CookieCore</name>
     <version>1.0.0</version>
     <description>Core for my own plugins or public use.</description>
-    <url>https://soyaldo.me/plugins/cookiecore</url>
+    <url>https://soyaldo.me/project/cookiecore</url>
     
     <properties>
         <java.version>1.8</java.version>
@@ -125,6 +125,11 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-api</artifactId>
+            <version>4.17.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-legacy</artifactId>
             <version>4.17.0</version>
         </dependency>
         <dependency>

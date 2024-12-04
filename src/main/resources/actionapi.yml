@@ -1,10 +1,11 @@
 ############# Types available #############
-# [message] Your text!
-# [action-bar] Your text!
-# [title] Title Sub title
-# [teleport] world x y z yaw pitch
+# [console-message]
 # [console-command] your command!
+# [player-message] Your text!
+# [player-title] Title Sub title
+# [player-action-bar] Your text!
 # [player-command] your command!
+# [player-teleport] world x y z yaw pitch
 #
 ############# Properties #############
 # [global] : default false
@@ -24,4 +25,4 @@ withDelay:
   - "[message] [delay:100] &aYou are awesome!"
 
 withPermission:
-  - "[message] [permission:permission.message] "
+  - "[player-message] [global] [async] [delay:10] [permission:permission.message] Hello :D"
