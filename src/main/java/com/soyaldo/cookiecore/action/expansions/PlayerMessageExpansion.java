@@ -15,11 +15,11 @@ public class PlayerMessageExpansion extends ActionExpansion {
 
     @Override
     public Action getAction() {
-        return new PlayerMessageAction(getActionManager());
+        return new PlayerMessageAction(getActionManager(), getName());
     }
 
     @Override
-    public Action processProperties(Action action, HashMap<String, String> properties) {
+    public Action processProperties(Action action, HashMap<String, Object> deserialized) {
         return action;
     }
 

@@ -12,8 +12,8 @@ import org.bukkit.entity.Player;
 
 public class PlayerMessageAction extends Action {
 
-    public PlayerMessageAction(ActionManager actionManager) {
-        super(actionManager, "player-message");
+    public PlayerMessageAction(ActionManager actionManager, String type) {
+        super(actionManager, type);
     }
 
     @Override

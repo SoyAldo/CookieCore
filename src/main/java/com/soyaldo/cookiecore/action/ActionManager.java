@@ -1,5 +1,6 @@
 package com.soyaldo.cookiecore.action;
 
+import com.soyaldo.cookiecore.action.expansions.PlayerMessageExpansion;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,31 +15,55 @@ public class ActionManager {
     private final HashMap<String, ActionExpansion> expansions = new HashMap<>();
 
     public void register() {
-
+        // Add default expansions
+        expansions.put("player-message", new PlayerMessageExpansion(this));
     }
 
     public void reload() {
 
     }
 
-    public boolean existExpansion(String name) {
-        return expansions.containsKey(name);
-    }
-
+    /**
+     * Add a new action expansion in the manager
+     *
+     * @param actionExpansion The action expansion
+     */
     public void addExpansion(ActionExpansion actionExpansion) {
         expansions.put(actionExpansion.getName(), actionExpansion);
     }
 
-    public void removeExpansion(String name) {
-        expansions.remove(name);
+    /**
+     * Verify if exist a specific action expansion
+     *
+     * @param actionExpansionName The action expansion name
+     * @return true if exist of false if not
+     */
+    public boolean existExpansion(String actionExpansionName) {
+        return expansions.containsKey(actionExpansionName);
     }
 
-    public ActionExpansion getExpansion(String name) {
-        return expansions.get(name);
+    /**
+     * Remove a specific action expansion
+     *
+     * @param actionExpansionName The action expansion name
+     */
+    public void removeExpansion(String actionExpansionName) {
+        expansions.remove(actionExpansionName);
+    }
+
+    /**
+     * Get a specific action expansion
+     *
+     * @param actionExpansionName The action expansion name
+     * @return The action expansion if exist of null if not
+     */
+    public ActionExpansion getExpansion(String actionExpansionName) {
+        return expansions.get(actionExpansionName);
     }
 
     /**
      * Generate an Action from action syntax
+     *
      * @param syntax The action syntax
      * @return The Action generated or null if an error ocurres
      */
@@ -49,10 +74,6 @@ public class ActionManager {
 
     public HashMap<String, Object> deserialize(String format) {
         HashMap<String, Object> deserialized = new HashMap<>();
-        deserialized.put("global", false);
-        deserialized.put("permission", "");
-        deserialized.put("async", false);
-        deserialized.put("delay", 0);
 
         while (format.split(" ")[0].startsWith("[") && format.split(" ")[0].endsWith("]")) {
             String property = format.split(" ")[0];
