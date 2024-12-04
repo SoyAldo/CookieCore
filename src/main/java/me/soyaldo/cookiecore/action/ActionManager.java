@@ -2,9 +2,7 @@ package me.soyaldo.cookiecore.action;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import me.soyaldo.cookiecore.action.expansions.ConsoleCommandExpansion;
-import me.soyaldo.cookiecore.action.expansions.ConsoleMessageExpansion;
-import me.soyaldo.cookiecore.action.expansions.PlayerMessageExpansion;
+import me.soyaldo.cookiecore.action.expansions.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
@@ -20,9 +18,11 @@ public class ActionManager {
 
     public void register() {
         // Add default expansions
-        expansions.put("console-message", new ConsoleMessageExpansion(this));
-        expansions.put("console-command", new ConsoleCommandExpansion(this));
-        expansions.put("player-message", new PlayerMessageExpansion(this));
+        addExpansion(new ConsoleCommandExpansion(this));
+        addExpansion(new ConsoleMessageExpansion(this));
+        addExpansion(new PlayerCommandExpansion(this));
+        addExpansion(new PlayerMessageExpansion(this));
+        addExpansion(new PlayerTitleExpansion(this));
     }
 
     public void reload() {
