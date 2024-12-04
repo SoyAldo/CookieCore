@@ -20,6 +20,7 @@ public class ActionManager {
         // Add default expansions
         addExpansion(new ConsoleCommandExpansion(this));
         addExpansion(new ConsoleMessageExpansion(this));
+        addExpansion(new PlayerActionBarExpansion(this));
         addExpansion(new PlayerCommandExpansion(this));
         addExpansion(new PlayerMessageExpansion(this));
         addExpansion(new PlayerTitleExpansion(this));
