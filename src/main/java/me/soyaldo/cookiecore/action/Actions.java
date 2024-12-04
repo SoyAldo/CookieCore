@@ -15,10 +15,4 @@ public class Actions {
         actions.forEach(action -> action.execute(player, replacements));
     }
 
-    public List<String> serialize() {
-        List<String> serialized = new ArrayList<>();
-        actions.forEach(action -> serialized.add(action.serialize()));
-        return serialized;
-    }
-
 }

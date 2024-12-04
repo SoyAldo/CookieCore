@@ -69,41 +69,4 @@ public abstract class Action {
         }
     }
 
-    public String serialize() {
-        String result = "[" + type + "]";
-
-        String extraProperties = onSerializeProperties();
-
-        String properties = "";
-        if (global) {
-            properties = properties + " [global]";
-        }
-
-        if (async) {
-            properties = properties + " [async]";
-        }
-
-        if (delay > 0) {
-            properties = properties + " [delay:" + delay + "]";
-        }
-
-        if (!permission.isEmpty()) {
-            properties = properties + " [permission:" + permission + "]";
-        }
-
-        if (!properties.isEmpty()) {
-            result = result + properties;
-        }
-
-        if (!extraProperties.isEmpty()) {
-            result = result + " " + extraProperties;
-        }
-
-        if (!value.isEmpty()) {
-            result = result + " " + value;
-        }
-
-        return result;
-    }
-
 }

@@ -3,11 +3,10 @@ package me.soyaldo.cookiecore.action;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.soyaldo.cookiecore.action.expansions.*;
+import me.soyaldo.cookiecore.action.util.ActionDeserializer;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 @Getter
@@ -76,7 +75,7 @@ public class ActionManager {
      */
     public Action generateAction(String actionSyntax) {
         // Deserialize the action syntax
-        HashMap<String, Object> deserialized = deserialize(actionSyntax);
+        HashMap<String, Object> deserialized = ActionDeserializer.process(actionSyntax);
         // If the deserialized has the type
         if (deserialized.containsKey("type")) {
             // Getting the type from deserialized
@@ -91,31 +90,6 @@ public class ActionManager {
         }
         // Return null
         return null;
-    }
-
-    public HashMap<String, Object> deserialize(String actionSyntax) {
-        HashMap<String, Object> result = new HashMap<>();
-        Pattern pattern = Pattern.compile("\\[(.*?)]");
-        Matcher matcher = pattern.matcher(actionSyntax);
-        String type = null;
-        String value = actionSyntax;
-        while (matcher.find()) {
-            String attribute = matcher.group(1);
-            if (type == null) {
-                type = attribute;
-                result.put("type", type);
-            } else {
-                String[] parts = attribute.split(":", 2);
-                if (parts.length == 2) {
-                    result.put(parts[0], parts[1]);
-                } else {
-                    result.put(attribute, true);
-                }
-            }
-            value = value.replace("[" + attribute + "]", "").trim();
-        }
-        result.put("value", value);
-        return result;
     }
 
 }
