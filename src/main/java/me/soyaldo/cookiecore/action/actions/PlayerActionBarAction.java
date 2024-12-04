@@ -8,20 +8,20 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
-public class ConsoleMessageAction extends Action {
+public class PlayerActionBarAction extends Action {
 
-    public ConsoleMessageAction(ActionManager actionManager, String type) {
+    public PlayerActionBarAction(ActionManager actionManager, String type) {
         super(actionManager, type);
     }
 
     @Override
     public void onExecute(Player player, String[][] replacements) {
-        // Getting the component
+        // Generating the component.
         Component component = AdventureUtil.getComponent(getValue(), replacements, player);
-        // Generating the audience
-        Audience audience = BukkitAudiences.create(getActionManager().getJavaPlugin()).console();
-        // Send the message
-        audience.sendMessage(component);
+        // Generating the audience.
+        Audience audience = BukkitAudiences.create(getActionManager().getJavaPlugin()).sender(player);
+        // Send the message.
+        audience.sendActionBar(component);
     }
 
 }

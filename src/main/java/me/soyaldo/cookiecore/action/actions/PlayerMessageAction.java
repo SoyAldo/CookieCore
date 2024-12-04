@@ -2,13 +2,10 @@ package me.soyaldo.cookiecore.action.actions;
 
 import me.soyaldo.cookiecore.action.Action;
 import me.soyaldo.cookiecore.action.ActionManager;
-import me.soyaldo.cookiecore.utils.PlaceholderUtil;
-import me.soyaldo.cookiecore.utils.TextUtil;
+import me.soyaldo.cookiecore.utils.AdventureUtil;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;
 
 public class PlayerMessageAction extends Action {
@@ -19,19 +16,11 @@ public class PlayerMessageAction extends Action {
 
     @Override
     public void onExecute(Player player, String[][] replacements) {
-        // Get the message
-        String message = getValue();
-        // Replacements
-        message = TextUtil.replace(message, replacements);
-        // PlaceholderAPI
-        message = PlaceholderUtil.setPlaceholder(player, message);
-        // Generating the audience.
+        // Getting the component
+        Component component = AdventureUtil.getComponent(getValue(), replacements, player);
+        // Generating the audience
         Audience audience = BukkitAudiences.create(getActionManager().getJavaPlugin()).sender(player);
-        // Generating the component.
-        Component componenteLegacy = LegacyComponentSerializer.legacyAmpersand().deserialize(message);
-        String legacySerialized = MiniMessage.miniMessage().serialize(componenteLegacy);
-        Component component = MiniMessage.miniMessage().deserialize(legacySerialized);
-        // Send the message.
+        // Send the message
         audience.sendMessage(component);
     }
 

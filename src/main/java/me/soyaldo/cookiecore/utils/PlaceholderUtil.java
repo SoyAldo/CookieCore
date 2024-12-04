@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 public class PlaceholderUtil {
 
     public static String setPlaceholder(Player player, String text) {
+        if (player == null) return text;
         if (Bukkit.getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {
             return text;
         }
