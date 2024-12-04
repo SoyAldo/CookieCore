@@ -1,0 +1,27 @@
+############# Types available #############
+# [console-command] your command!
+# [console-message]
+# [player-command] your command!
+# [player-message] Your text!
+# [player-title] [title:] [subtitle:] [fade-in:500] [stay:3000] [fade-out:1000]
+# [player-action-bar] Your text!
+#
+############# Global Properties #############
+# [global] : default false
+# [async] : default false
+# [delay:10] : default 0
+# [permission:your.permission.node] : default not defined
+
+normal:
+  - "[message] &aNormal message!"
+
+withDelay:
+  - "[message] &aMessage in 5 second..."
+  - "[message] [delay:20] &aMessage in 4 second..."
+  - "[message] [delay:40] &aMessage in 3 second..."
+  - "[message] [delay:60] &aMessage in 2 second..."
+  - "[message] [delay:80] &aMessage in 1 second..."
+  - "[message] [delay:100] &aYou are awesome!"
+
+withPermission:
+  - "[player-message] [global] [async] [delay:10] [permission:permission.message] Hello :D"
