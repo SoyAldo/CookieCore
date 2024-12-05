@@ -2,7 +2,9 @@
 
 # CookieCore
 
-CookieCore is a versatile library designed to simplify plugin development in Minecraft. It offers a number of essential utilities and tools to optimize the development experience and improve the efficiency of your projects. It is for public use and is designed to be easily integrated into any server.
+CookieCore is a versatile library designed to simplify plugin development in Minecraft. It offers a number of essential
+utilities and tools to optimize the development experience and improve the efficiency of your projects. It is for public
+use and is designed to be easily integrated into any server.
 
 ## Features
 
@@ -25,29 +27,34 @@ CookieCore is a versatile library designed to simplify plugin development in Min
 
 ## Dependency
 
-Add the CookieCore with maven
+Add the repository in your maven.xml
 
 ```xml
+
 <repositories>
-	<repository>
-		<id>jitpack.io</id>
-		<url>https://www.jitpack.io</url>
-	</repository>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://www.jitpack.io</url>
+    </repository>
 </repositories>
+```
+
+Add the dependency in your maven.xml
+
+```xml
 
 <dependencies>
     <dependency>
-	    <groupId>com.github.SoyAldo</groupId>
-	    <artifactId>CookieCore</artifactId>
-	    <version>1.1.0</version>
-	</dependency>
+        <groupId>com.github.SoyAldo</groupId>
+        <artifactId>CookieCore</artifactId>
+        <version>1.1.1</version>
+    </dependency>
 </dependencies>
 ```
 
 ## Authors
 
 - [@SoyAldo](https://www.github.com/SoyAldo)
-
 
 ## License
 
