@@ -1,7 +1,5 @@
 package me.soyaldo.cookiecore.file.yaml.v1;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
-import de.tr7zw.changeme.nbtapi.NBTType;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
@@ -521,23 +519,6 @@ public class Yaml {
                     itemStack.setDurability((short) getInt(path + ".durability"));
                 }
             }
-            // ITEM NBTAPI
-            if (contains(path + ".nbt")) {
-                if (Bukkit.getPluginManager().isPluginEnabled("NBTAPI")) {
-                    NBTItem nbtItem = new NBTItem(itemStack);
-                    for (String key : Objects.requireNonNull(getFileConfiguration().getConfigurationSection(path + ".nbt")).getKeys(false)) {
-                        try {
-                            if (isString(path + ".nbt." + key)) {
-                                nbtItem.setString(key, getString(path + ".nbt." + key));
-                            } else if (isInt(path + ".nbt." + key)) {
-                                nbtItem.setInteger(key, getInt(path + ".nbt." + key));
-                            }
-                        } catch (Exception ignore) {
-                        }
-                    }
-                    itemStack = nbtItem.getItem();
-                }
-            }
             // SKULL ITEM
             if (itemStack.getType().equals(Material.PLAYER_HEAD)) {
                 if (contains(path + ".head-owner")) {
@@ -593,17 +574,6 @@ public class Yaml {
             }
             if (item.getType().getMaxDurability() != item.getDurability()) {
                 set(path + ".durability", item.getDurability());
-            }
-            // ITEM NBTAPI
-            if (Bukkit.getPluginManager().isPluginEnabled("NBTAPI")) {
-                NBTItem nbtItem = new NBTItem(item);
-                for (String key : nbtItem.getKeys()) {
-                    if (nbtItem.getType(key).equals(NBTType.NBTTagString)) {
-                        set(path + ".nbt." + key, nbtItem.getString(key));
-                    } else if (nbtItem.getType(key).equals(NBTType.NBTTagInt)) {
-                        set(path + ".nbt." + key, nbtItem.getInteger(key));
-                    }
-                }
             }
             // SKULL TYPE
             if (item.getType().equals(Material.PLAYER_HEAD)) {

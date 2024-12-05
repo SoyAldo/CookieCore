@@ -1,10 +1,5 @@
 package me.soyaldo.cookiecore.file.yaml.v2;
 
-import com.cryptomorin.xseries.XMaterial;
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
-import de.tr7zw.changeme.nbtapi.NBTItem;
-import de.tr7zw.changeme.nbtapi.NBTType;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
@@ -25,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.logging.Level;
 
 public class Yaml {
 
@@ -402,9 +396,7 @@ public class Yaml {
     }
 
     public ItemStack getItemStack(String path, String[][] replacements) {
-        XMaterial xMaterial = XMaterial.matchXMaterial(getString(path + ".material")).orElse(null);
-        assert xMaterial != null;
-        Material material = xMaterial.parseMaterial();
+        Material material = Material.valueOf(getString(path + ".material"));
         int amount = getInt(path + ".amount", 1);
         // MaterialData
         short data = -1;
@@ -412,8 +404,6 @@ public class Yaml {
             if (isInt(path + ".data")) {
                 data = (short) getInt(path + ".data");
             }
-        } else {
-            data = xMaterial.getData();
         }
         if (material != null) {
             ItemStack itemStack;
@@ -468,29 +458,11 @@ public class Yaml {
                     itemStack.setDurability((short) getInt(path + ".durability"));
                 }
             }
-            // ITEM NBTAPI
-            if (contains(path + ".nbt")) {
-                NBTItem nbtItem = new NBTItem(itemStack);
-                for (String key : Objects.requireNonNull(getConfigurationSection(path + ".nbt")).getKeys(false)) {
-                    try {
-                        if (isString(path + ".nbt." + key)) {
-                            nbtItem.setString(key, getString(path + ".nbt." + key));
-                        } else if (isInt(path + ".nbt." + key)) {
-                            nbtItem.setInteger(key, getInt(path + ".nbt." + key));
-                        } else {
-                            javaPlugin.getLogger().log(Level.SEVERE, "An error has occurred trying load NBT: " + key + ". Please enter a valid type: STRING/INTEGER.");
-                        }
-                    } catch (Exception e) {
-                        javaPlugin.getLogger().log(Level.SEVERE, "An error has occurred trying load NBT: " + key);
-                    }
-                }
-                itemStack = nbtItem.getItem();
-            }
             // LEATHER ARMOR ITEM
-            if (xMaterial.parseMaterial().equals((XMaterial.matchXMaterial("LEATHER_HELMET").orElse(null).parseMaterial()))
-                    || xMaterial.parseMaterial().equals((XMaterial.matchXMaterial("LEATHER_CHESTPLATE").orElse(null).parseMaterial()))
-                    || xMaterial.parseMaterial().equals((XMaterial.matchXMaterial("LEATHER_LEGGINGS").orElse(null).parseMaterial()))
-                    || xMaterial.parseMaterial().equals((XMaterial.matchXMaterial("LEATHER_BOOTS").orElse(null).parseMaterial()))) {
+            if (material.equals(Material.LEATHER_HELMET) ||
+                    material.equals(Material.LEATHER_CHESTPLATE) ||
+                    material.equals(Material.LEATHER_LEGGINGS) ||
+                    material.equals(Material.LEATHER_BOOTS)) {
                 if (contains(path + ".color") && isString(path + ".color")) {
                     // color: "#E5E533"
                     String colorString = StringUtils.replace(getString(path + ".color"), "#", "0x");
@@ -499,22 +471,6 @@ public class Yaml {
                     leatherArmorMeta.setColor(Color.fromRGB(color));
                     itemStack.setItemMeta(leatherArmorMeta);
                 }
-            }
-            // SKULL ITEM
-            if (xMaterial.parseMaterial().equals((XMaterial.matchXMaterial("PLAYER_HEAD").orElse(null).parseMaterial()))) {
-                if (contains(path + ".base64-texture")) {
-                    String value = getString(path + ".base64-texture");
-                    return getCustomTextureHead(value);
-                }
-                if (contains(path + ".head-owner")) {
-                    if (isString(path + ".head-owner")) {
-                        SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
-                        assert skullMeta != null;
-                        skullMeta.setOwner(getString(path + ".head-owner"));
-                        itemStack.setItemMeta(skullMeta);
-                    }
-                }
-
             }
             return replace(itemStack, replacements);
         } else {
@@ -525,100 +481,6 @@ public class Yaml {
             }
             error.setItemMeta(errorMeta);
             return error;
-        }
-    }
-
-    public ItemStack getCustomTextureHead(String value) {
-        ItemStack head;
-        try {
-            head = new ItemStack(Material.PLAYER_HEAD);
-        } catch (Throwable var2) {
-            head = new ItemStack(Material.valueOf("SKULL_ITEM"), 1, (short) 3);
-        }
-        SkullMeta meta = (SkullMeta) head.getItemMeta();
-        GameProfile profile = new GameProfile(UUID.randomUUID(), "");
-        profile.getProperties().put("textures", new Property("textures", value));
-        Field profileField = null;
-        try {
-            profileField = meta.getClass().getDeclaredField("profile");
-            profileField.setAccessible(true);
-            profileField.set(meta, profile);
-        } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
-            e.printStackTrace();
-        }
-        head.setItemMeta(meta);
-        return head;
-    }
-
-    public void setItemStack(String path, ItemStack item) {
-        set(path + ".material", item.getType().toString());
-        set(path + ".amount", item.getAmount());
-        ItemMeta itemMeta = item.getItemMeta();
-        if (itemMeta != null) {
-            // DisplayName
-            if (itemMeta.hasDisplayName()) {
-                set(path + ".name", itemMeta.getDisplayName());
-            }
-            // Lore
-            if (itemMeta.hasLore()) {
-                set(path + ".lore", itemMeta.getLore());
-            }
-            // ItemFlag
-            if (!itemMeta.getItemFlags().isEmpty()) {
-                List<String> flags = new ArrayList<>();
-                for (ItemFlag flag : itemMeta.getItemFlags()) {
-                    flags.add(flag.toString());
-                }
-                set(path + ".flags", flags);
-            }
-            // Enchantments
-            if (!item.getEnchantments().isEmpty()) {
-                for (Enchantment enchantment : item.getEnchantments().keySet()) {
-                    set(path + ".enchantments." + enchantment.getName(), item.getEnchantments().get(enchantment));
-                }
-            }
-            if (!Objects.equals(Objects.requireNonNull(item.getData()).toString(), "0")) {
-                set(path + ".data", item.getData().getData());
-            }
-            if (item.getType().getMaxDurability() != item.getDurability()) {
-                set(path + ".durability", item.getDurability());
-            }
-            // ITEM NBTAPI
-            NBTItem nbtItem = new NBTItem(item);
-            for (String key : nbtItem.getKeys()) {
-                if (nbtItem.getType(key).equals(NBTType.NBTTagString)) {
-                    set(path + ".nbt." + key, nbtItem.getString(key));
-                } else if (nbtItem.getType(key).equals(NBTType.NBTTagInt)) {
-                    set(path + ".nbt." + key, nbtItem.getInteger(key));
-                }
-            }
-            // LEATHER ARMOR ITEM
-            if (item.getType().equals(Objects.requireNonNull(XMaterial.matchXMaterial("LEATHER_HELMET").orElse(null)).parseMaterial())
-                    || item.getType().equals(Objects.requireNonNull(XMaterial.matchXMaterial("LEATHER_CHESTPLATE").orElse(null)).parseMaterial())
-                    || item.getType().equals(Objects.requireNonNull(XMaterial.matchXMaterial("LEATHER_LEGGINGS").orElse(null)).parseMaterial())
-                    || item.getType().equals(Objects.requireNonNull(XMaterial.matchXMaterial("LEATHER_BOOTS").orElse(null)).parseMaterial())) {
-                // color: "#E5E533"
-                LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) item.getItemMeta();
-                int color = leatherArmorMeta.getColor().asRGB();
-                String colorString = String.valueOf(color);
-                set(path + ".color", StringUtils.replace(colorString, "0x", "#"));
-            }
-            // SKULL TYPE
-            try {
-                if (item.getType().toString().equals("PLAYER_HEAD")) {
-                    SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
-                    if (skullMeta.hasOwner()) {
-                        set(path + ".head-owner", Objects.requireNonNull(skullMeta.getOwningPlayer()).getName());
-                    }
-                }
-            } catch (NoSuchFieldError e) {
-                if (item.getType().toString().equals("LEGACY_SKULL_ITEM")) {
-                    SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
-                    if (skullMeta.hasOwner()) {
-                        set(path + ".head-owner", Objects.requireNonNull(skullMeta.getOwningPlayer()).getName());
-                    }
-                }
-            }
         }
     }
 
@@ -757,5 +619,83 @@ public class Yaml {
         item.setItemMeta(meta);
         return item;
     }
+
+    /**
+     * Crea una cabeza personalizada con una textura específica.
+     *
+     * @param textureURL La URL de la textura. Debe ser un enlace a un servidor de texturas como Mojang.
+     *                   Ejemplo: "http://textures.minecraft.net/texture/xxxxxxxxxxxxxxxxxxxxxxxxxxxxx".
+     * @return El ItemStack de la cabeza personalizada.
+     */
+    public ItemStack createCustomHead(String textureURL) {
+        // Crear un ItemStack de cabeza de jugador
+        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+
+        // Configurar el meta de la cabeza
+        SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
+
+        if (skullMeta != null) {
+            // Crear un GameProfile con una textura personalizada
+            UUID uuid = UUID.randomUUID();
+            String encodedData = Base64.getEncoder().encodeToString((
+                    "{\"textures\":{\"SKIN\":{\"url\":\"" + textureURL + "\"}}}"
+            ).getBytes());
+
+            try {
+                // Usar reflección para acceder al campo privado 'profile' de SkullMeta
+                Field profileField = skullMeta.getClass().getDeclaredField("profile");
+                profileField.setAccessible(true);
+
+                // Crear el GameProfile e insertar la textura
+                Object gameProfile = createGameProfile(uuid, encodedData);
+                profileField.set(skullMeta, gameProfile);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
+            // Establecer el meta en la cabeza
+            head.setItemMeta(skullMeta);
+        }
+
+        return head;
+    }
+
+    /**
+     * Crea un GameProfile para una textura personalizada.
+     *
+     * @param uuid        El UUID del perfil.
+     * @param encodedData La textura codificada en Base64.
+     * @return El objeto GameProfile configurado.
+     */
+    private Object createGameProfile(UUID uuid, String encodedData) {
+        try {
+            // Usar reflección para crear una instancia de GameProfile
+            Class<?> gameProfileClass = Class.forName("com.mojang.authlib.GameProfile");
+            Class<?> propertyClass = Class.forName("com.mojang.authlib.properties.Property");
+
+            // Crear el GameProfile
+            Object gameProfile = gameProfileClass
+                    .getConstructor(UUID.class, String.class)
+                    .newInstance(uuid, null);
+
+            // Obtener el campo de propiedades del GameProfile
+            Field propertiesField = gameProfileClass.getDeclaredField("properties");
+            propertiesField.setAccessible(true);
+
+            // Agregar la textura a las propiedades
+            Object properties = propertiesField.get(gameProfile);
+            properties.getClass()
+                    .getMethod("put", Object.class, Object.class)
+                    .invoke(properties, "textures", propertyClass
+                            .getConstructor(String.class, String.class)
+                            .newInstance("textures", encodedData));
+
+            return gameProfile;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 }
