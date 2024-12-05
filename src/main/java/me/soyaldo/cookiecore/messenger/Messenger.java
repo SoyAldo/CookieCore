@@ -2,15 +2,11 @@ package me.soyaldo.cookiecore.messenger;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.clip.placeholderapi.PlaceholderAPI;
 import me.soyaldo.cookiecore.file.Yaml;
+import me.soyaldo.cookiecore.utils.AdventureUtil;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -107,14 +103,9 @@ public class Messenger {
 
     public static void sendRaw(JavaPlugin javaPlugin, CommandSender commandSender, List<String> messages, String[][] replacements) {
         // If the message is null.
-        if (messages == null) {
-            // Return the method.
-            return;
-        }
+        if (messages == null) return;
         // Use the sendRaw in all list.
-        for (String message : messages) {
-            sendRaw(javaPlugin, commandSender, message, replacements);
-        }
+        messages.forEach(message -> sendRaw(javaPlugin, commandSender, message, replacements));
     }
 
     public static void sendRaw(JavaPlugin javaPlugin, CommandSender commandSender, String message) {
@@ -124,32 +115,11 @@ public class Messenger {
 
     public static void sendRaw(JavaPlugin javaPlugin, CommandSender commandSender, String message, String[][] replacements) {
         // If the message is null.
-        if (message == null) {
-            // Return the method.
-            return;
-        }
-
-        // Replace all replacements.
-        for (String[] replacement : replacements) {
-            message = message.replace(replacement[0], replacement[1]);
-        }
-
-        // PlaceholderAPI
-        if (commandSender instanceof Player) {
-            Player player = (Player) commandSender;
-            if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-                message = PlaceholderAPI.setPlaceholders(player, message);
-            }
-        }
-
+        if (message == null) return;
+        // Generating the component.
+        Component component = AdventureUtil.getComponent(message, replacements, commandSender);
         // Generating the audience.
         Audience audience = BukkitAudiences.create(javaPlugin).sender(commandSender);
-
-        // Generating the component.
-        Component componenteLegacy = LegacyComponentSerializer.legacyAmpersand().deserialize(message);
-        String legacySerialized = MiniMessage.miniMessage().serialize(componenteLegacy);
-        Component component = MiniMessage.miniMessage().deserialize(legacySerialized);
-
         // Send the message.
         audience.sendMessage(component);
     }
