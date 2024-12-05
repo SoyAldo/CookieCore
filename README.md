@@ -23,6 +23,26 @@ CookieCore is a versatile library designed to simplify plugin development in Min
 - Messenger Utility
 - Copyright Utility
 
+## Dependency
+
+Add the CookieCore with maven
+
+```xml
+<repositories>
+	<repository>
+		<id>jitpack.io</id>
+		<url>https://www.jitpack.io</url>
+	</repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+	    <groupId>com.github.SoyAldo</groupId>
+	    <artifactId>CookieCore</artifactId>
+	    <version>Tag</version>
+	</dependency>
+</dependencies>
+```
 
 ## Authors
 
