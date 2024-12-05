@@ -39,7 +39,7 @@ Add the CookieCore with maven
     <dependency>
 	    <groupId>com.github.SoyAldo</groupId>
 	    <artifactId>CookieCore</artifactId>
-	    <version>Tag</version>
+	    <version>1.1.0</version>
 	</dependency>
 </dependencies>
 ```
