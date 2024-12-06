@@ -19,15 +19,15 @@ public class CopyrightUtil {
 
     public static void sendVersionStatus(JavaPlugin plugin, CommandSender commandSender, String status) {
         List<String> versionStatus = new ArrayList<>();
-        versionStatus.add("&6»");
-        versionStatus.add("&6» &f" + plugin.getName() + " " + status);
-        versionStatus.add("&6»");
-        versionStatus.add("&6» &fVersion:&e " + plugin.getDescription().getVersion());
-        versionStatus.add("&6» &fAuthor:&e SoyAldo");
-        versionStatus.add("&6» &fWebsite:&e https://soyaldo.me/project/" + plugin.getName().toLowerCase());
-        versionStatus.add("&6»");
-        versionStatus.add("&6» &fCoded with love <3");
-        versionStatus.add("&6»");
+        versionStatus.add("<gold>»</gold>");
+        versionStatus.add("<gold>»</gold> <white>" + plugin.getName() + "</white> " + status);
+        versionStatus.add("<gold>»</gold>");
+        versionStatus.add("<gold>»</gold> <white>Version:</white> <yellow>" + plugin.getDescription().getVersion() + "</yellow>");
+        versionStatus.add("<gold>»</gold> <white>Author:</white> <yellow>SoyAldo</yellow>");
+        versionStatus.add("<gold>»</gold> <white>Website:</white> <yellow>https://soyaldo.me/project/</yellow>" + plugin.getName().toLowerCase());
+        versionStatus.add("<gold>»</gold>");
+        versionStatus.add("<gold>»</gold> <white>Coded with love <3</white>");
+        versionStatus.add("<gold>»</gold>");
         Messenger.sendRaw(plugin, commandSender, versionStatus);
     }
 
