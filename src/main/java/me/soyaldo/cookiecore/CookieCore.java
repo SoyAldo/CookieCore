@@ -1,12 +1,13 @@
 package me.soyaldo.cookiecore;
 
+import lombok.Getter;
 import me.soyaldo.cookiecore.action.ActionManager;
 import me.soyaldo.cookiecore.bukkit.commands.ActionAPICommand;
 import me.soyaldo.cookiecore.bukkit.commands.CookieCoreCommand;
+import me.soyaldo.cookiecore.bukkit.commands.NBTItemAPICommand;
 import me.soyaldo.cookiecore.file.Yaml;
 import me.soyaldo.cookiecore.messenger.Messenger;
 import me.soyaldo.cookiecore.utils.CopyrightUtil;
-import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @Getter
@@ -30,16 +31,17 @@ public final class CookieCore extends JavaPlugin {
         // Commands
         new CookieCoreCommand(this).registerCommand(this);
         new ActionAPICommand(this).registerCommand(this);
+        new NBTItemAPICommand(this).registerCommand(this);
         // Managers
         actionManager.register();
         // Copyright
-        CopyrightUtil.sendVersionStatusFromConsole(this, "&aEnabled");
+        CopyrightUtil.sendVersionStatusFromConsole(this, "Enabled");
     }
 
     @Override
     public void onDisable() {
         // Copyright
-        CopyrightUtil.sendVersionStatusFromConsole(this, "&cDisabled");
+        CopyrightUtil.sendVersionStatusFromConsole(this, "Disabled");
     }
 
     public void reload() {
