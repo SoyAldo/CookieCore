@@ -12,11 +12,16 @@ commands:
     description: "Admin command for CookieCore."
   actionapi:
     description: "ActionAPI command for test."
+  nbtitemapi:
+    description: "NBTItemAPI command for test."
 
 permissions:
   cookiecore.admin:
     description: "Access to execute /cookiecore command."
     default: "op"
   cookiecore.actionapi:
+    description: "Access s to execute /actionapi command."
+    default: "op"
+  cookiecore.nbtitemapi:
     description: "Access s to execute /actionapi command."
     default: "op"
