@@ -15,9 +15,28 @@ help:
 
 actionapi:
   help:
-    - ""
+    - "/actionapi help"
+    - "/actionapi verify [action syntax]"
   noPermission: "No tienes suficientes permisos para ejecutar este comando."
   emptySubCommand: "El sub comando no puede estár vacío. Puedes revisar como usar este comando usando /actionapi help"
   invalidSubCommand: "El subcomando no es válido. Puedes revisar como usar este comando usando /actionapi help"
   actionSyntaxError: "La acción no tiene un formato válido. Revise la documentación y vuelve a intentarlo."
   actionVerified: "La acción fue comprobada con éxito."
+
+nbtitemapi:
+  help:
+    - "/nbtitemapi help"
+    - "/nbtitemapi setstring"
+    - "/nbtitemapi getstring"
+    - "/nbtitemapi getall"
+  noPermission: "No tienes suficientes permisos para ejecutar este comando."
+  emptySubCommand: "El sub comando no puede estár vacío. Puedes revisar como usar este comando usando /actionapi help"
+  invalidSubCommand: "El subcomando no es válido. Puedes revisar como usar este comando usando /actionapi help"
+  emptyKey: "La clave no puede estár vacío. Puedes revisar como usar este comando usando /nbtitemapi help"
+  emptyValue: "El valor no puede estár vacío. Puedes revisar como usar este comando usando /nbtitemapi help"
+  invalidItemStackInHand: "El objeto que tienes en tu mano principal no es válido o no tienes nada en ella."
+  stringSet: "Se estableció un nuevo nbt de tipo STRING con clave '%key%' y un valor de '%value%'"
+  stringView: "El valor de tipo STRING para la clave '%key%' es '%value%'"
+  invalidBoolean: "El valor no es válido. Debe ser o 'true' o 'false'"
+  booleanSet: "Se estableció un nuevo nbt de tipo BOOLEAN con clave '%key%' y un valor de '%value%'"
+  booleanView: "El valor de tipo BOOLEAN para la clave '%key%' es '%value%'"
