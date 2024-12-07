@@ -1,0 +1,16 @@
+example:
+  material/type: "stone"
+  amount: 20
+  customModelData/cmd: 10
+  unbreakable: false
+  displayName/name: "<gold>Your display name</gold>"
+  lore:
+    - "<gold>Line 1</gold>"
+    - "<gold>Line 2</gold>"
+  itemFlags/flags:
+    - "HIDE_ENCHANTS"
+  enchantments/enchants:
+    DAMAGE_ALL: 5
+  nbt:
+    name: "value"
+    minecraft:integer: 5
