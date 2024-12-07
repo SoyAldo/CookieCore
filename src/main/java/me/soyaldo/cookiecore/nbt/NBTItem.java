@@ -95,6 +95,55 @@ public class NBTItem {
         }
     }
 
+    public DataType getDataType(String keyName) {
+        if (isByte(keyName)) {
+            return DataType.BYTE;
+        } else if (isDouble(keyName)) {
+            return DataType.DOUBLE;
+        } else if (isFloat(keyName)) {
+            return DataType.FLOAT;
+        } else if (isLong(keyName)) {
+            return DataType.LONG;
+        } else if (isInteger(keyName)) {
+            return DataType.INTEGER;
+        } else if (isShort(keyName)) {
+            return DataType.SHORT;
+        } else if (isString(keyName)) {
+            return DataType.STRING;
+        } else if (isBoolean(keyName)) {
+            return DataType.BOOLEAN;
+        } else {
+            return DataType.UNKNOWN;
+        }
+    }
+
+    public Object get(String keyName) {
+        DataType dataType = getDataType(keyName);
+        if (dataType.equals(DataType.BYTE)) {
+            return getByte(keyName);
+        } else if (dataType.equals(DataType.DOUBLE)) {
+            return getDouble(keyName);
+        } else if (dataType.equals(DataType.FLOAT)) {
+            return getFloat(keyName);
+        } else if (dataType.equals(DataType.LONG)) {
+            return getLong(keyName);
+        } else if (dataType.equals(DataType.INTEGER)) {
+            return getInteger(keyName);
+        } else if (dataType.equals(DataType.SHORT)) {
+            return getShort(keyName);
+        } else if (dataType.equals(DataType.STRING)) {
+            return getString(keyName);
+        } else if (dataType.equals(DataType.BOOLEAN)) {
+            return getBoolean(keyName);
+        } else {
+            return null;
+        }
+    }
+
+    public boolean contains(String keyName) {
+        return getKeys().contains(keyName);
+    }
+
     public boolean isByte(String keyName) {
         NamespacedKey namespacedKey = NamespacedKey.fromString(keyName, javaPlugin);
         if (persistentDataContainer != null && namespacedKey != null) {
@@ -103,7 +152,7 @@ public class NBTItem {
         return false;
     }
 
-    public double getByte(String keyName) {
+    public byte getByte(String keyName) {
         NamespacedKey namespacedKey = NamespacedKey.fromString(keyName, javaPlugin);
         if (persistentDataContainer != null && namespacedKey != null) {
             Byte value = persistentDataContainer.get(namespacedKey, PersistentDataType.BYTE);
@@ -171,7 +220,7 @@ public class NBTItem {
         return -1L;
     }
 
-    public boolean isInt(String keyName) {
+    public boolean isInteger(String keyName) {
         NamespacedKey namespacedKey = NamespacedKey.fromString(keyName, javaPlugin);
         if (persistentDataContainer != null && namespacedKey != null) {
             return persistentDataContainer.has(namespacedKey, PersistentDataType.INTEGER);
@@ -179,7 +228,7 @@ public class NBTItem {
         return false;
     }
 
-    public int getInt(String keyName) {
+    public int getInteger(String keyName) {
         NamespacedKey namespacedKey = NamespacedKey.fromString(keyName, javaPlugin);
         if (persistentDataContainer != null && namespacedKey != null) {
             Integer value = persistentDataContainer.get(namespacedKey, PersistentDataType.INTEGER);
@@ -212,7 +261,12 @@ public class NBTItem {
     public boolean isString(String keyName) {
         NamespacedKey namespacedKey = NamespacedKey.fromString(keyName, javaPlugin);
         if (persistentDataContainer != null && namespacedKey != null) {
-            return persistentDataContainer.has(namespacedKey, PersistentDataType.STRING);
+            if (persistentDataContainer.has(namespacedKey, PersistentDataType.STRING)) {
+                String value = persistentDataContainer.get(namespacedKey, PersistentDataType.STRING);
+                if (value != null) {
+                    return !value.startsWith(DataType.BOOLEAN + ":");
+                }
+            }
         }
         return false;
     }
@@ -222,9 +276,7 @@ public class NBTItem {
         if (persistentDataContainer != null && namespacedKey != null) {
             String value = persistentDataContainer.get(namespacedKey, PersistentDataType.STRING);
             if (value != null) {
-                if (value.startsWith(DataType.STRING + ":")) {
-                    return value.split(":")[1];
-                }
+                return value;
             }
         }
         return "";
