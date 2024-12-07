@@ -4,8 +4,8 @@ main: me.soyaldo.cookiecore.CookieCore
 api-version: '1.16'
 softdepend: [ PlaceholderAPI ]
 authors: [ SoyAldo ]
-description: Core for my own plugins or public use.
-website: https://soyaldo.me/project/cookiecore
+description: '${project.description}'
+website: '${project.url}'
 
 commands:
   cookiecore:

@@ -8,10 +8,18 @@
     <artifactId>CookieCore</artifactId>
     <packaging>jar</packaging>
 
+    <developers>
+        <developer>
+            <name>SoyAldo</name>
+            <email>hello@soyaldo.me</email>
+            <organization>CookteStudios</organization>
+        </developer>
+    </developers>
+
     <name>CookieCore</name>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <description>Core for my own plugins or public use.</description>
-    <url>https://soyaldo.me/project/cookiecore</url>
+    <url>https://soyaldo.me/project/cookiecore/</url>
 
     <properties>
         <java.version>1.8</java.version>
