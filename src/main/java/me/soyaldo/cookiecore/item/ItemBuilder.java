@@ -1,6 +1,7 @@
 package me.soyaldo.cookiecore.item;
 
 import lombok.Getter;
+import me.soyaldo.cookiecore.nbt.NBTItem;
 import me.soyaldo.cookiecore.utils.AdventureUtil;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -142,6 +143,16 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder addNBT(String keyName, Object value) {
+        itemInfo.getNbt().put(keyName, value);
+        return this;
+    }
+
+    public ItemBuilder setNBTs(HashMap<String, Object> nbtMap) {
+        itemInfo.setNbt(nbtMap);
+        return this;
+    }
+
     /**
      * Build the ItemStack.
      *
@@ -200,6 +211,12 @@ public class ItemBuilder {
                 }
             }
         }
+        // Nbt
+        NBTItem nbtItem = new NBTItem(itemStack);
+        for (String keyName : itemInfo.getNbt().keySet()) {
+            nbtItem.set(keyName, itemInfo.getNbt().get(keyName));
+        }
+        itemStack = nbtItem.getItemStack();
         // Return the ItemStack
         return itemStack;
     }

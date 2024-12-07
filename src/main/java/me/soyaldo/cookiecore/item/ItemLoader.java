@@ -101,7 +101,21 @@ public class ItemLoader {
                             }
                         }
                         itemBuilder.setEnchantments(enchantments);
+
                     }
+                }
+            }
+        }
+        // NBT
+        if (fileConfiguration.contains(realPath + "nbt")) {
+            if (fileConfiguration.isConfigurationSection(realPath + "nbt")) {
+                ConfigurationSection nbtSection = fileConfiguration.getConfigurationSection(realPath + "nbt");
+                if (nbtSection != null) {
+                    HashMap<String, Object> nbtMap = new HashMap<>();
+                    for (String enchantment : nbtSection.getKeys(false)) {
+                        nbtMap.put(enchantment, nbtSection.get(enchantment));
+                    }
+                    itemBuilder.setNBTs(nbtMap);
                 }
             }
         }

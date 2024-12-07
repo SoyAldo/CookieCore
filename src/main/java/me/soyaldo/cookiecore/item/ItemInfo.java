@@ -17,5 +17,6 @@ public class ItemInfo {
     private boolean unbreakable = false;
     private List<String> itemFlags = new ArrayList<>();
     private HashMap<String, Integer> enchantments = new HashMap<>();
+    private HashMap<String, Object> nbt = new HashMap<>();
 
 }
